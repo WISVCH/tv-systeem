@@ -78,9 +78,50 @@
 
 					});
 				break;
+			
+				case 'tv_item': 
+					var html = slideData['image-fullscreen'];
+					targetList.html(html);
+					targetList.find("img").bind("ready load", function(){
+						console.log("Loaded tv item", slideData);
+						base.resizeNow();	// Resize background image
+						if(loadedCallback) loadedCallback($(this));
+					});
+				break;
+
+				case 'event': 
+					var flitcieRegex = /https:\/\/flitcie\.ch\.tudelft\.nl\/([0-9]{1,3})\/([a-zA-Z0-9\-]+)/i;
+					var result, html;
+					if(result = flitcieRegex.exec(slideData.body)){
+						html += "<iframe src='"+result[0]+"' width='100%' height='100%'></iframe>";
+						console.log("FlitCie album!!", result);
+					} else {
+						html = '<h1>'+slideData.title+'</h1>'+slideData.date_event;
+					}
+					targetList.html(html);
+					setTimeout(function(){
+						console.log("Loaded event", slideData);
+						base.resizeNow();	// Resize background image
+						if(loadedCallback) loadedCallback(targetList);
+					}, 10);
+				break;
+
+			
+				case 'ACTIVITY':
+				case 'FLITCIE':
+					var d = new Date();
+					var html = '<pre width="100%" height="100%">';
+					html += JSON.stringify(slideData);
+					html += '</pre>';
+					targetList.html(html);
+					(function() {
+						console.log("ready called");
+						base.resizeNow();	// Resize background image
+						if(loadedCallback) loadedCallback($(this));
+					})();
+				break;
 
 				case 'IMAGE':
-				default:
 					var slideLink = (base.options.slides[loadPrev].url) ? "href='" + slideData.url + "'" : "";
 
 					var img = $('<img src="'+slideData.image+'"/>');
@@ -91,6 +132,8 @@
 						base.resizeNow();	// Resize background image
 						if(loadedCallback) loadedCallback($(this)); //
 					});	// End  IMAGE
+				default:
+					console.log("Unknown type slide", slideData);
 				break;
 
 			}
