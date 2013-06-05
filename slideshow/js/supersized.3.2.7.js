@@ -57,83 +57,45 @@
 
 			targetList.attr("data-slidetype",slideData.type);
 
+			function done(){
+				base.resizeNow();	// Resize background image
+				if(loadedCallback) loadedCallback(targetList);
+				targetList.removeAttr("style");
+			}
 
 			switch(slideData.type){
-
-				case 'VIMEO':
-					if(!$f) alert("You must include froogaloops.js to use vimeo slides");
-
-					var d = new Date();
-					var uid = "vimeo-"+ d.getTime() + '_' + uniqueCounter++;
-					var html = '<iframe src="http://player.vimeo.com/video/'+slideData.video_id+'?api=1&player_id=' + uid + '"';
-					html += ' id="'+uid+'"';
-					html += ' width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-					targetList.html(html);
-					var iframe=targetList.find('iframe')[0];
-					$f(iframe).addEvent('ready', function() {
-						console.log("ready called");
-						base.resizeNow();	// Resize background image
-						if(loadedCallback) loadedCallback($(this));
-
-
-					});
-				break;
-			
-				case 'tv_item': 
-					var html = slideData['image-fullscreen'];
-					targetList.html(html);
-					targetList.find("img").bind("ready load", function(){
-						console.log("Loaded tv item", slideData);
-						base.resizeNow();	// Resize background image
-						if(loadedCallback) loadedCallback($(this));
-					});
-				break;
-
+				
 				case 'event': 
 					var flitcieRegex = /https:\/\/flitcie\.ch\.tudelft\.nl\/([0-9]{1,3})\/([a-zA-Z0-9\-]+)/i;
-					var result, html;
+					var result;
 					if(result = flitcieRegex.exec(slideData.body)){
-						html += "<iframe src='"+result[0]+"' width='100%' height='100%'></iframe>";
 						console.log("FlitCie album!!", result);
-					} else {
-						html = '<h1>'+slideData.title+'</h1>'+slideData.date_event;
+						targetList.html("<iframe src='"+result[0]+"' width='100%' height='100%'></iframe>");
+						setTimeout(done, 10);
+						break;
 					}
-					targetList.html(html);
-					setTimeout(function(){
-						console.log("Loaded event", slideData);
-						base.resizeNow();	// Resize background image
-						if(loadedCallback) loadedCallback(targetList);
-					}, 10);
-				break;
-
 			
-				case 'ACTIVITY':
-				case 'FLITCIE':
-					var d = new Date();
-					var html = '<pre width="100%" height="100%">';
-					html += JSON.stringify(slideData);
-					html += '</pre>';
-					targetList.html(html);
-					(function() {
-						console.log("ready called");
-						base.resizeNow();	// Resize background image
-						if(loadedCallback) loadedCallback($(this));
-					})();
-				break;
+				case 'tv_item':
+					if(slideData.body.length > 0 && slideData.type == 'tv_item')
+					{
+						console.log("Using html body for", slideData.title);
+						targetList.html(slideData.body);
+						targetList.delegate("*", "ready load", base.resizeNow);
+						setTimeout(done, 10);
+						break;
+					} 
+					else if (slideData['image-fullscreen'].length > 0)
+					{
+						console.log("Using fullscreen image", slideData.title, slideData);
+						targetList.html(slideData['image-fullscreen']);
+						targetList.find("img").bind("ready load", done).data('origHeight', 1080).data('origWidth', 1920);
+						break;
+					}
 
-				case 'IMAGE':
-					var slideLink = (base.options.slides[loadPrev].url) ? "href='" + slideData.url + "'" : "";
-
-					var img = $('<img src="'+slideData.image+'"/>');
-					img.appendTo(targetList).wrap('<a ' + slideLink + linkTarget + '></a>');
-
-					img.load(function(){
-						base._origDim($(this));
-						base.resizeNow();	// Resize background image
-						if(loadedCallback) loadedCallback($(this)); //
-					});	// End  IMAGE
 				default:
+					//targetList.remove();
 					console.log("Unknown type slide", slideData);
+					return false;
 				break;
 
 			}
@@ -615,7 +577,8 @@
 				$(vars.slide_list +'> li' ).eq(vars.current_slide).addClass('current-slide');
 			}
 
-				nextslide.css('visibility','hidden').addClass('activeslide');	// Update active slide
+				nextslide.css('visibility','hidden').removeClass('nextslide').addClass('activeslide');	// Update active slide
+				(nextslide.next() || nextslide.siblings().first()).addClass('nextslide');
 
 				switch(base.options.transition){
 					case 0: case 'none':	// No transition
