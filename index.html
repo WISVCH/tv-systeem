@@ -20,6 +20,15 @@
 		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="theme/supersized.shutter.css" type="text/css" media="screen" />
 		
+		<script>
+		// elk uur of 's nachts herladen pagina
+		var everyHour = true;
+		var reloadInterval = setInterval(function(){
+			if(everyHour || (new Date).getHours() == 23){
+				location.reload();
+			}
+		}, 1000*3600);
+		</script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.easing.min.js"></script>
 		
@@ -86,19 +95,22 @@
 					);
 					
 					// Animate album while visible
-					if(isFlitcie) slideData.action = function(data){
-						var $obj = this;
-						
-						function animate(){
-							var ifrm = $obj.find("iframe").get(0);
-							if(ifrm){
-								var jQ = ifrm.contentWindow.jQuery;
-								jQ(ifrm.contentWindow.document.body).trigger("keyup", {keyCode: 32});
-							} else console.log("Flitcie couldn't animate :(");
-						}
-						setTimeout(animate, 5000);
-						setTimeout(animate, 9000);
-					};
+					if(isFlitcie){
+					  slideData.action = function(data){
+	 						var $obj = this;
+	
+	 						function animate(){
+	 							var ifrm = $obj.find("iframe").get(0);
+	 							if(ifrm){
+	 								var jQ = ifrm.contentWindow.jQuery;
+	 								jQ(ifrm.contentWindow.document.body).trigger("keyup", {keyCode: 32});
+	 							} else console.log("Flitcie couldn't animate :(");
+	 						}
+	 						setTimeout(animate, 5000);
+	 						setTimeout(animate, 9000);
+	 					};
+						if(window.location.href.indexOf("buiten") > 0) return; 
+					}
 					
 					if(valid) return slideData;
 				}).filter(function(item){ return item; }));
