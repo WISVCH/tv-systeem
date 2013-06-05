@@ -39,7 +39,7 @@
 					start_slide             : 1,			// Start slide (0 is random)
 					stop_loop								:	0,			// Pauses slideshow on last slide
 					random									: 0,			// Randomize slide order (Ignores start slide)
-					slide_interval          : 4000,		// Length between transitions
+					slide_interval          : 12000,		// Length between transitions
 					transition              : 3, 			// 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
 					transition_speed				:	1000,		// Speed of transition
 					new_window							:	1,			// Image links open in new window/tab
@@ -77,12 +77,28 @@
 			$.getJSON(api, function(data){
 				construct($, data.map(function(slideData){
 					var flitcieRegex = /https:\/\/flitcie\.ch\.tudelft\.nl\/([0-9]{1,3})\/([a-zA-Z0-9\-]+)/i;
+					var isFlitcie = flitcieRegex.exec(slideData.body);
 					
 					var valid = (
-						slideData.type == 'event' && flitcieRegex.exec(slideData.body) ||
+						slideData.type == 'event' && isFlitcie ||
 						slideData.body.length > 0 && slideData.type == 'tv_item' || 
 						slideData['image-fullscreen'] && slideData['image-fullscreen'].length > 0
 					);
+					
+					// Animate album while visible
+					if(isFlitcie) slideData.action = function(data){
+						var $obj = this;
+						
+						function animate(){
+							var ifrm = $obj.find("iframe").get(0);
+							if(ifrm){
+								var jQ = ifrm.contentWindow.jQuery;
+								jQ(ifrm.contentWindow.document.body).trigger("keyup", {keyCode: 32});
+							} else console.log("Flitcie couldn't animate :(");
+						}
+						setTimeout(animate, 5000);
+						setTimeout(animate, 9000);
+					};
 					
 					if(valid) return slideData;
 				}).filter(function(item){ return item; }));

@@ -69,8 +69,8 @@
 					var flitcieRegex = /https:\/\/flitcie\.ch\.tudelft\.nl\/([0-9]{1,3})\/([a-zA-Z0-9\-]+)/i;
 					var result;
 					if(result = flitcieRegex.exec(slideData.body)){
-						console.log("FlitCie album!!", result);
-						targetList.html("<iframe src='"+result[0]+"' width='100%' height='100%'></iframe>");
+						//console.log("FlitCie album!!", result);
+						targetList.html("<iframe src='flitcie.php?url="+result[0]+"' width='100%' height='100%'></iframe>");
 						setTimeout(done, 10);
 						break;
 					}
@@ -78,7 +78,7 @@
 				case 'tv_item':
 					if(slideData.body.length > 0 && slideData.type == 'tv_item')
 					{
-						console.log("Using html body for", slideData.title);
+						//console.log("Using html body for", slideData.title);
 						targetList.html(slideData.body);
 						targetList.delegate("*", "ready load", base.resizeNow);
 						setTimeout(done, 10);
@@ -86,7 +86,7 @@
 					} 
 					else if (slideData['image-fullscreen'].length > 0)
 					{
-						console.log("Using fullscreen image", slideData.title, slideData);
+						//console.log("Using fullscreen image", slideData.title, slideData);
 						targetList.html(slideData['image-fullscreen']);
 						targetList.find("img").bind("ready load", done).data('origHeight', 1080).data('origWidth', 1920);
 						break;
@@ -94,7 +94,7 @@
 
 				default:
 					//targetList.remove();
-					console.log("Unknown type slide", slideData);
+					//console.log("Unknown type slide", slideData);
 					return false;
 				break;
 
@@ -248,6 +248,18 @@
 
 			};
 
+		/* Make longer
+		----------------------------*/
+		base.extendTime = function(time){
+			console.log("Extending time for slide with", time);
+			if (base.options.autoplay && base.options.slides.length > 1){
+				clearInterval(vars.slideshow_interval);
+				setTimeout(function(){
+					console.log("Resume animations", time);
+					vars.slideshow_interval = setInterval(base.nextSlide, base.options.slide_interval);
+				}, time);
+			}
+		};
 
 		/* Launch Supersized
 		----------------------------*/
@@ -538,7 +550,6 @@
 			loadSlide = false;
 
 			vars.current_slide == base.options.slides.length - 1 ? loadSlide = 0 : loadSlide = vars.current_slide + 1;	// Determine next slide
-
 			var targetList = $(base.el+' li:eq('+loadSlide+')');
 			if (!targetList.html()){
 				targetList.addClass('image-loading').css('visibility','hidden');
@@ -549,6 +560,11 @@
 				});
 
 			};
+			
+			// Allow slide to prepare
+			if(base.options.slides[vars.current_slide].action){
+				base.options.slides[vars.current_slide].action.call(targetList.prev(), base.options.slides[vars.current_slide]);
+			}
 
 			// Update thumbnails (if enabled)
 			if (base.options.thumbnail_navigation == 1){
@@ -608,6 +624,10 @@
 					liveslide.animate({ left: base.$el.width(), avoidTransforms : false }, base.options.transition_speed );
 						break;
 				}
+				
+				if(base.options.slides[vars.current_slide].type == 'flitcie')
+					base.extendTime(5000);
+				
 				return false;
 		};
 
