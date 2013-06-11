@@ -66,7 +66,7 @@
     // Transit-specific properties
     if(type === 'transit') {
       // Shortcut to enable 3d-transforms
-      if(typeof args[0].rotate3d === 'undefined' && args[0].enable3d === true)
+      if(typeof args[0].rotate3d === 'undefined')
         args[0].rotate3d = '0,0,0,0deg';
     }
  

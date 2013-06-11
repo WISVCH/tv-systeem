@@ -607,7 +607,7 @@
 							nextslide.animate({top : -base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 							break;
 					case 3: case 'slideRight':	// Slide Right
-						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.transition({x : base.$el.width()}, 0 ).css('visibility','visible').transition({ x:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 4: case 'slideBottom': // Slide Bottom
 						nextslide.animate({top : base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
