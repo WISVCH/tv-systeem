@@ -601,27 +601,27 @@
 							nextslide.css('visibility','visible'); vars.in_animation = false; base.afterAnimation();
 							break;
 					case 1: case 'fade':	// Fade
-							nextslide.animate({opacity : 0},0).css('visibility','visible').animate({opacity : 1, avoidTransforms : false}, base.options.transition_speed, function(){ base.afterAnimation(); });
+							nextslide.animate({opacity : 0},0).css('visibility','visible').animate({opacity : 1}, base.options.transition_speed, function(){ base.afterAnimation(); });
 							break;
 					case 2: case 'slideTop':	// Slide Top
-							nextslide.animate({top : -base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+							nextslide.animate({top : -base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 							break;
 					case 3: case 'slideRight':	// Slide Right
-						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 4: case 'slideBottom': // Slide Bottom
-						nextslide.animate({top : base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({top : base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 5: case 'slideLeft':  // Slide Left
-						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 6: case 'carouselRight':	// Carousel Right
-						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
-					liveslide.animate({ left: -base.$el.width(), avoidTransforms : false }, base.options.transition_speed );
+						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
+					liveslide.animate({ left: -base.$el.width() }, base.options.transition_speed );
 						break;
 					case 7: case 'carouselLeft':   // Carousel Left
-						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
-					liveslide.animate({ left: base.$el.width(), avoidTransforms : false }, base.options.transition_speed );
+						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
+					liveslide.animate({ left: base.$el.width() }, base.options.transition_speed );
 						break;
 				}
 				
@@ -708,27 +708,27 @@
 							nextslide.css('visibility','visible'); vars.in_animation = false; base.afterAnimation();
 							break;
 					case 1: case 'fade':	// Fade
-							nextslide.animate({opacity : 0},0).css('visibility','visible').animate({opacity : 1, avoidTransforms : false}, base.options.transition_speed, function(){ base.afterAnimation(); });
+							nextslide.animate({opacity : 0},0).css('visibility','visible').animate({opacity : 1}, base.options.transition_speed, function(){ base.afterAnimation(); });
 							break;
 					case 2: case 'slideTop':	// Slide Top (reverse)
-							nextslide.animate({top : base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+							nextslide.animate({top : base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 							break;
 					case 3: case 'slideRight':	// Slide Right (reverse)
-						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 4: case 'slideBottom': // Slide Bottom (reverse)
-						nextslide.animate({top : -base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({top : -base.$el.height()}, 0 ).css('visibility','visible').animate({ top:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 5: case 'slideLeft':  // Slide Left (reverse)
-						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
+						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
 						break;
 					case 6: case 'carouselRight':	// Carousel Right (reverse)
-						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
-					liveslide.animate({left : 0}, 0 ).animate({ left: base.$el.width(), avoidTransforms : false}, base.options.transition_speed );
+						nextslide.animate({left : -base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
+					liveslide.animate({left : 0}, 0 ).animate({ left: base.$el.width()}, base.options.transition_speed );
 						break;
 					case 7: case 'carouselLeft':   // Carousel Left (reverse)
-						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0, avoidTransforms : false }, base.options.transition_speed, function(){ base.afterAnimation(); });
-					liveslide.animate({left : 0}, 0 ).animate({ left: -base.$el.width(), avoidTransforms : false }, base.options.transition_speed );
+						nextslide.animate({left : base.$el.width()}, 0 ).css('visibility','visible').animate({ left:0 }, base.options.transition_speed, function(){ base.afterAnimation(); });
+					liveslide.animate({left : 0}, 0 ).animate({ left: -base.$el.width() }, base.options.transition_speed );
 						break;
 				}
 				return false;
