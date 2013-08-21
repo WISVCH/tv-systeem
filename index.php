@@ -14,7 +14,7 @@
 
 	<head>
 
-		<title>CH TV nr <?php echo mysql_real_escape_string($_GET['title']); ?></title>
+		<title>CH TV nr <?php $_GET['title']; ?></title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		
 		<link rel="stylesheet" href="css/supersized.css" type="text/css" media="screen" />
